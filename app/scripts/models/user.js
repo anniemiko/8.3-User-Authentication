@@ -7,7 +7,7 @@ var User = Backbone.Model.extend({
 
 var UserCollection = Backbone.Collection.extend({
   model: User,
-  url: 'https://tiny-parse-server.herokuapp.com/classes/User'
+  url: 'https://tiny-parse-server.herokuapp.com/users'
 
 });
 

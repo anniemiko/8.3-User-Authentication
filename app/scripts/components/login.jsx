@@ -21,19 +21,26 @@ var LoginContainer = React.createClass({
 });
 
 var LoginForm = React.createClass({
+  getInitialState: function(){
+    var userCollection = new UserCollection();
+    return {userCollection: userCollection}
+  },
   handleLogin: function(e){
     e.preventDefault();
-    var username = $(form).find('#email-login').val();
-    var password = $(form).find('#password-login').val();
-    var user = {
-      username: username,
-      password: password
-    }
-    var userCollection = new UserCollection();
-    userCollection.create(user);
+    ajaxSetup();
+    var username = $('#email-login').val();
+    var password = $('#password-login').val();
+    // var user = {
+    //   username: username,
+    //   password: password
+    // }
+    var newUserCollection = this.state.userCollection;
+    newUserCollection.create({'username': username, 'password': password});
     // submit to api,
     // if user exists, check password, if pw = pw, get a token back, stoe to local storage, then route to chat page,
     // if no username, alert to create a new user/check username or password.
+    this.setState({userCollection: newUserCollection});
+    console.log(username);
   },
   render: function(){
     return (
@@ -41,7 +48,7 @@ var LoginForm = React.createClass({
 
       <h1>Please Login</h1>
 
-      <form id="login">
+      <form onSubmit={this.handleLogin} id="login">
             <div className="form-group">
               <label htmlFor="email-login">Email address</label>
               <input className="form-control" name="email" id="email-login" type="email" placeholder="Enter email here" />
@@ -52,7 +59,7 @@ var LoginForm = React.createClass({
               <input className="form-control" name="password" id="password-login" type="password" placeholder="Password please" />
             </div>
 
-            <input onClick={this.handleLogin} className="btn btn-primary" type="submit" value="Beam Me Up!" />
+            <input className="btn btn-primary" type="submit" value="Beam Me Up!" />
           </form>
       </div>
     )
@@ -62,13 +69,28 @@ var LoginForm = React.createClass({
 var SignupForm = React.createClass({
   // submit username and pw to api, get token and store to local storage.
   // run setupajax function and pass in token
+  getInitialState: function(){
+    var userCollection = new UserCollection();
+    return {userCollection: userCollection}
+  },
+  handleSignUp: function(e){
+    e.preventDefault();
+    ajaxSetup();
+    var username = $('#signup-email').val();
+    var password = $('#signup-password').val();
+
+    var newUserCollection = this.state.userCollection;
+    newUserCollection.create({'username': username, 'password': password});
+    this.setState({userCollection: newUserCollection});
+    console.log(username);
+  },
   render: function(){
     return (
       <div className="col-md-6">
 
         <h1>No Account? Sign up!</h1>
 
-        <form id="signup">
+        <form onSubmit={this.handleSignUp} id="signup">
 
           <div className="form-group">
             <label htmlFor="email">Email</label>
