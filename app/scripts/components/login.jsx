@@ -7,10 +7,21 @@ var UserCollection = require('../models/user.js').UserCollection;
 var User = require('../models/user.js').User;
 
 var LoginContainer = React.createClass({
-  // logInUser: function(){
-  //
-  // },
+  onSubmitNew: function(user, pass) {
+
+    setupAjax();
+    User.signup({username: user, password: pass});
+  },
+  onSubmit: function(user, pass) {
+      setupAjax();
+      User.login({username: user, password: pass}, function(user){
+        console.log(user);
+        User.store(user);
+      });
+  },
   render: function(){
+    var token = User.current().sessionToken;
+    console.log(token);
     return(
       <div>
         <LoginForm loginUser={this.loginUser}/>
